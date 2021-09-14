@@ -1,11 +1,29 @@
 import "reflect-metadata";
 
-import express, { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import { AppError } from "./controllers/errors/AppError";
 
-const app = express()
+import express from "express";
+import router from "./Router";
 
-app.get("/", (req: Request, res: Response) => {
-  return res.send("Hello");
-});
+const errorHandler = (error: Error, request: Request, response: Response, _next: NextFunction) => {
+  if(error instanceof AppError) {
+    return response.status(error.statusCode).json({
+      message: error.message
+    });
+  }
 
-export { app }
+  return response.status(500).json({
+    status: "Error",
+    message: `Internal server error: ${error.message}`
+  });
+}
+
+const app = express();
+
+app.use(express.json());
+app.use(router);
+
+app.use(errorHandler);
+
+export { app };
