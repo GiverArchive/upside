@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import { AppError } from "./controllers/errors/AppError";
 
 import express from "express";
-import router from "./Router";
+import router from "./router";
 
 const errorHandler = (error: Error, request: Request, response: Response, _next: NextFunction) => {
   if(error instanceof AppError) {
@@ -26,4 +26,4 @@ app.use(router);
 
 app.use(errorHandler);
 
-export { app };
+export default app;
