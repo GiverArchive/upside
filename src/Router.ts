@@ -1,9 +1,9 @@
 import { Request, Response, Router } from "express";
 
+import { reverse } from "./controllers/TextController";
+
 const router = Router();
 
-router.get("/", (req: Request, res: Response) => {
-  return res.send("Estou workando!");
-})
+router.post("/text/reverse", reverse);
 
 export default router;
